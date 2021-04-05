@@ -1,8 +1,8 @@
-import {toBinaryTree} from 'utils'
+import {toTree} from 'utils'
 import {lowestCommonAncestor} from './lowest-common-ancestor-of-a-binary-tree'
 
 test('should be 3', () => {
-  const tree = toBinaryTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4])
+  const tree = toTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4])
   const p = tree.left
   const q = tree.right
 
@@ -10,7 +10,7 @@ test('should be 3', () => {
 })
 
 test('should be 5', () => {
-  const tree = toBinaryTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4])
+  const tree = toTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4])
   const p = tree.left
   const q = tree.left.right.right
 
@@ -18,7 +18,7 @@ test('should be 5', () => {
 })
 
 test('should be 1', () => {
-  const tree = toBinaryTree([1, 2])
+  const tree = toTree([1, 2])
   const p = tree
   const q = tree.left
 
@@ -26,7 +26,7 @@ test('should be 1', () => {
 })
 
 test('should be 1', () => {
-  const tree = toBinaryTree([1, 2])
+  const tree = toTree([1, 2])
   const p = tree.left
   const q = tree
 

@@ -1,3 +1,8 @@
+export interface GraphNode {
+  val: number
+  neighbors: GraphNode[]
+}
+
 export interface ListNode {
   val: number
   next: ListNode | null
@@ -18,7 +23,7 @@ export function toLinkedList(nums: number[]): ListNode | null {
   return {val: nums[0], next: toLinkedList(nums.slice(1))}
 }
 
-export function toBinaryTree(nums: number[]): TreeNode | null {
+export function toTree(nums: number[]): TreeNode | null {
   if (!nums || !nums.length) {
     return null
   }
@@ -46,4 +51,26 @@ export function toBinaryTree(nums: number[]): TreeNode | null {
   }
 
   return root
+}
+
+export function toGraph(nums: number[][], startNode: number): GraphNode | null {
+  const nodes = new Map<number, GraphNode>()
+
+  for (let index = 0; index < nums.length; index++) {
+    const link = nums[index]
+    const nodeValue = link[0]
+    const nodeNeighbour = link[1]
+
+    if (!nodes.has(nodeValue)) {
+      nodes.set(nodeValue, {val: nodeValue, neighbors: []})
+    }
+
+    if (!nodes.has(nodeNeighbour)) {
+      nodes.set(nodeNeighbour, {val: nodeNeighbour, neighbors: []})
+    }
+
+    nodes.get(nodeValue).neighbors.push(nodes.get(nodeNeighbour))
+  }
+
+  return nodes.get(startNode)
 }

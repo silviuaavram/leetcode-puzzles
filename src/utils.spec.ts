@@ -1,4 +1,4 @@
-import {toBinaryTree, toLinkedList, TreeNode} from 'utils'
+import {toTree, toLinkedList, TreeNode} from 'utils'
 
 test('toLinkedList non-empty list', () => {
   expect(toLinkedList([1, 2, 3])).toEqual({
@@ -23,7 +23,7 @@ test('toBinaryTree non-empty list', () => {
     },
   }
 
-  expect(toBinaryTree(nums)).toEqual(expected)
+  expect(toTree(nums)).toEqual(expected)
 })
 
 test('toBinaryTree non-empty list with one element', () => {
@@ -34,11 +34,11 @@ test('toBinaryTree non-empty list with one element', () => {
     right: null,
   }
 
-  expect(toBinaryTree(nums)).toEqual(expected)
+  expect(toTree(nums)).toEqual(expected)
 })
 
 test('toBinaryTree empty list', () => {
   const nums: number[] = []
 
-  expect(toBinaryTree(nums)).toBeNull()
+  expect(toTree(nums)).toBeNull()
 })
