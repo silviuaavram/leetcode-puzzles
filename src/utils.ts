@@ -8,6 +8,11 @@ export interface ListNode {
   next: ListNode | null
 }
 
+export interface DoublyListNode extends ListNode {
+  prev: DoublyListNode | null
+  next: DoublyListNode | null
+}
+
 export interface TreeNode {
   val: number
   left: TreeNode | null
@@ -21,6 +26,25 @@ export function toLinkedList(nums: number[]): ListNode | null {
   }
 
   return {val: nums[0], next: toLinkedList(nums.slice(1))}
+}
+
+export function toDoublyLinkedList(nums: number[]): DoublyListNode | null {
+  const listResult = toLinkedList(nums) as DoublyListNode
+
+  if (!listResult) {
+    return null
+  }
+
+  let current = listResult
+  let prev = null
+
+  while (current) {
+    current.prev = prev
+    prev = current
+    current = current.next
+  }
+
+  return listResult
 }
 
 export function toTree(nums: number[]): TreeNode | null {
