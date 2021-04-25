@@ -1,4 +1,4 @@
-import {toTree, toLinkedList, TreeNode} from 'utils'
+import {toTree, toLinkedList, TreeNode, toGraph, GraphNode} from 'utils'
 
 test('toLinkedList non-empty list', () => {
   expect(toLinkedList([1, 2, 3])).toEqual({
@@ -41,4 +41,35 @@ test('toBinaryTree empty list', () => {
   const nums: number[] = []
 
   expect(toTree(nums)).toBeNull()
+})
+
+test('toGraph non-empty list', () => {
+  const g = toGraph(
+    [
+      [0, 3],
+      [0, 4],
+      [0, 2],
+      [1, 2],
+      [2, 0],
+      [3, 2],
+      [4, 0],
+      [4, 3],
+      [4, 1],
+    ],
+    0,
+  )
+  const expectedNodes: GraphNode[] = [
+    {val: 0, neighbors: []},
+    {val: 1, neighbors: []},
+    {val: 2, neighbors: []},
+    {val: 3, neighbors: []},
+    {val: 4, neighbors: []}
+  ]
+  expectedNodes[0].neighbors.push(expectedNodes[3],expectedNodes[4],expectedNodes[2])
+  expectedNodes[3].neighbors.push(expectedNodes[2])
+  expectedNodes[4].neighbors.push(expectedNodes[0],expectedNodes[3],expectedNodes[1])
+  expectedNodes[2].neighbors.push(expectedNodes[0])
+  expectedNodes[1].neighbors.push(expectedNodes[2])
+
+  expect(g).toEqual(expectedNodes[0])
 })
