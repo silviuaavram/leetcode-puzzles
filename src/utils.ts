@@ -20,6 +20,11 @@ export interface TreeNode {
   visited?: boolean
 }
 
+export interface TrieNode {
+  isWord: boolean
+  values: Map<string, TrieNode>
+}
+
 export function toLinkedList(nums: number[]): ListNode | null {
   if (!nums || !nums.length) {
     return null
