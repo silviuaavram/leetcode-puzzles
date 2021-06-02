@@ -21,7 +21,5 @@ export function kClosest(points: number[][], k: number): number[][] {
     result.push(pointsHeap.remove())
   }
 
-
-
   return result
 }

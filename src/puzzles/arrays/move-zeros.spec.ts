@@ -1,6 +1,3 @@
-/**
- * https://leetcode.com/problems/move-zeroes/
- */
 import {moveZeroes} from './move-zeros'
 
 test('should move zeros to the end 1', () => {
