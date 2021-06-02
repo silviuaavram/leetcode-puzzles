@@ -103,3 +103,95 @@ export function toGraph(nums: number[][], startNode: number): GraphNode | null {
 
   return nodes.get(startNode)
 }
+
+interface HeapNode<T> {
+  value: T
+  left?: HeapNode<T>
+  right?: HeapNode<T>
+  parent?: HeapNode<T>
+}
+
+export class Heap<T = number> {
+  constructor(isHigher?: (value1: T, value2: T) => boolean) {
+    this.isHigher = isHigher
+      ? isHigher
+      : (value1: T, value2: T) => value1 > value2 // MaxHeap with numbers by default
+    this.nodes = []
+  }
+
+  private isHigher: (value1: T, value2: T) => boolean
+  private nodes: HeapNode<T>[]
+  private head: HeapNode<T>
+
+  public add(value: T) {
+    let current: HeapNode<T> = {
+      value,
+    }
+
+    if (this.nodes.length === 0) {
+      this.head = current
+      this.nodes.push(current)
+    } else {
+      let parent = this.nodes[0]
+      current.parent = parent
+
+      if (parent.left) {
+        parent.right = current
+        this.nodes.shift()
+      } else {
+        parent.left = current
+      }
+
+      this.nodes.push(current)
+
+      while (
+        current.parent &&
+        this.isHigher(current.value, current.parent.value)
+      ) {
+        const auxValue = current.parent.value
+
+        current.parent.value = current.value
+        current.value = auxValue
+
+        current = current.parent
+      }
+    }
+  }
+
+  public peek(): T {
+    return this.head.value
+  }
+
+  public remove(): T {
+    const result = this.head.value
+    let current = this.nodes.pop()
+
+    if (current.parent.left === current) {
+      current.parent.left = null
+    } else {
+      current.parent.right = null
+    }
+
+    this.head.value = current.value
+    current = this.head
+
+    while (
+      (current.left && this.isHigher(current.left.value, current.value)) ||
+      (current.right && this.isHigher(current.right.value, current.value))
+    ) {
+      if (current.left && this.isHigher(current.left.value, current.value)) {
+        const aux = current.left.value
+        current.left.value = current.value
+        current.value = aux
+        current = current.left
+      } else {
+        const aux = current.right.value
+        current.right.value = current.value
+        current.value = aux
+        current = current.right
+      }
+    }
+
+    return result
+  }
+}

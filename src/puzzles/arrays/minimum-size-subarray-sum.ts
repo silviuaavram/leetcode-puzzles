@@ -4,7 +4,7 @@
 export function minSubArrayLen(target: number, nums: number[]): number {
   let lengthResult = nums.length
   const sums = nums.reduce((acc, num, index) => {
-    acc.push((acc[index - 1] ?? 0) + nums[index])
+    acc.push((acc[index - 1] ?? 0) + num)
 
     return acc
   }, [])

@@ -1,4 +1,4 @@
-import {toTree, toLinkedList, TreeNode, toGraph, GraphNode} from 'utils'
+import {toTree, toLinkedList, TreeNode, toGraph, GraphNode, Heap} from 'utils'
 
 test('toLinkedList non-empty list', () => {
   expect(toLinkedList([1, 2, 3])).toEqual({
@@ -63,13 +63,51 @@ test('toGraph non-empty list', () => {
     {val: 1, neighbors: []},
     {val: 2, neighbors: []},
     {val: 3, neighbors: []},
-    {val: 4, neighbors: []}
+    {val: 4, neighbors: []},
   ]
-  expectedNodes[0].neighbors.push(expectedNodes[3],expectedNodes[4],expectedNodes[2])
+  expectedNodes[0].neighbors.push(
+    expectedNodes[3],
+    expectedNodes[4],
+    expectedNodes[2],
+  )
   expectedNodes[3].neighbors.push(expectedNodes[2])
-  expectedNodes[4].neighbors.push(expectedNodes[0],expectedNodes[3],expectedNodes[1])
+  expectedNodes[4].neighbors.push(
+    expectedNodes[0],
+    expectedNodes[3],
+    expectedNodes[1],
+  )
   expectedNodes[2].neighbors.push(expectedNodes[0])
   expectedNodes[1].neighbors.push(expectedNodes[2])
 
   expect(g).toEqual(expectedNodes[0])
+})
+
+test('the Heap works', () => {
+  const heap = new Heap()
+
+  heap.add(2)
+  expect(heap.peek()).toEqual(2)
+
+  heap.add(5)
+  expect(heap.peek()).toEqual(5)
+
+  heap.add(3)
+  expect(heap.peek()).toEqual(5)
+
+  heap.add(4)
+  expect(heap.peek()).toEqual(5)
+
+  heap.add(6)
+  expect(heap.peek()).toEqual(6)
+
+  expect(heap.remove()).toEqual(6)
+  expect(heap.peek()).toEqual(5)
+  expect(heap.remove()).toEqual(5)
+  expect(heap.peek()).toEqual(4)
+
+  heap.add(1)
+  expect(heap.peek()).toEqual(4)
+
+  heap.add(9)
+  expect(heap.peek()).toEqual(9)
 })
