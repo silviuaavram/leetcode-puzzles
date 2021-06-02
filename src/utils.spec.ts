@@ -100,6 +100,7 @@ test('the Heap works', () => {
   heap.add(6)
   expect(heap.peek()).toEqual(6)
 
+
   expect(heap.remove()).toEqual(6)
   expect(heap.peek()).toEqual(5)
   expect(heap.remove()).toEqual(5)
@@ -109,5 +110,12 @@ test('the Heap works', () => {
   expect(heap.peek()).toEqual(4)
 
   heap.add(9)
-  expect(heap.peek()).toEqual(9)
+  expect(heap.remove()).toEqual(9)
+  expect(heap.remove()).toEqual(4)
+  expect(heap.remove()).toEqual(3)
+  expect(heap.remove()).toEqual(2)
+  expect(heap.remove()).toEqual(1)
+
+  heap.add(11)
+  expect(heap.remove()).toEqual(11)
 })

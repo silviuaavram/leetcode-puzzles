@@ -123,6 +123,30 @@ export class Heap<T = number> {
   private nodes: HeapNode<T>[]
   private head: HeapNode<T>
 
+  public print(): void {
+    const result: T[][] = [[this.head.value]]
+    const queue: HeapNode<T>[] = [this.head]
+    const newQueue: HeapNode<T>[] = []
+
+    while (queue.length) {
+      const current = queue.shift()
+
+      if (current.left) {
+        newQueue.push(current.left)
+      }
+      if (current.right) {
+        newQueue.push(current.right)
+      }
+      if (!queue.length && newQueue.length) {
+        queue.push(...newQueue)
+        result.push(newQueue.map(n => n.value))
+        newQueue.length = 0
+      }
+    }
+
+    console.log(result)
+  }
+
   public add(value: T) {
     let current: HeapNode<T> = {
       value,
@@ -166,32 +190,40 @@ export class Heap<T = number> {
     const result = this.head.value
     let current = this.nodes.pop()
 
+    if (!current.parent) {
+      this.head = null
+      return result
+    }
+
     if (current.parent.left === current) {
       current.parent.left = null
-    } else {
+    } else if (current.parent.right === current) {
       current.parent.right = null
+      this.nodes.unshift(current.parent)
     }
 
     this.head.value = current.value
-    current = this.head
 
-    while (
-      (current.left && this.isHigher(current.left.value, current.value)) ||
-      (current.right && this.isHigher(current.right.value, current.value))
-    ) {
-      if (current.left && this.isHigher(current.left.value, current.value)) {
-        const aux = current.left.value
-        current.left.value = current.value
-        current.value = aux
-        current = current.left
-      } else {
-        const aux = current.right.value
-        current.right.value = current.value
-        current.value = aux
-        current = current.right
-      }
-    }
+    this.swapOnRemove()
 
     return result
+  }
+
+  private swapOnRemove(current = this.head): void {
+    if (current.left && this.isHigher(current.left.value, current.value)) {
+      const aux = current.left.value
+      current.left.value = current.value
+      current.value = aux
+
+      this.swapOnRemove(current.left)
+    }
+
+    if (current.right && this.isHigher(current.right.value, current.value)) {
+      const aux = current.right.value
+      current.right.value = current.value
+      current.value = aux
+
+      this.swapOnRemove(current.right)
+    }
   }
 }
