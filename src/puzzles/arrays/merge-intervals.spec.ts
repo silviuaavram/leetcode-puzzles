@@ -1,7 +1,3 @@
-/**
- * https://leetcode.com/problems/merge-intervals/
- */
-
 import {merge} from './merge-intervals'
 
 test('merges intervals 1', () => {
