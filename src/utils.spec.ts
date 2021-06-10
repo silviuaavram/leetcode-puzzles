@@ -200,3 +200,32 @@ test('toNAry tree works 2', () => {
 
   expect(toNAryTree(nums)).toEqual(expected)
 })
+
+test('toNAry tree works 3', () => {
+  const nums = [1]
+  const expected: NAryTreeNode = {
+    val: 1,
+    children: [],
+  }
+
+  expect(toNAryTree(nums)).toEqual(expected)
+})
+
+test('toNAry tree works 4', () => {
+  const nums = [1, null]
+  const expected: NAryTreeNode = {
+    val: 1,
+    children: [],
+  }
+
+  expect(toNAryTree(nums)).toEqual(expected)
+})
+test('toNAry tree works 5', () => {
+  const nums = [1, null, null]
+  const expected: NAryTreeNode = {
+    val: 1,
+    children: [],
+  }
+
+  expect(toNAryTree(nums)).toEqual(expected)
+})
