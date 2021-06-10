@@ -20,6 +20,11 @@ export interface TreeNode {
   visited?: boolean
 }
 
+export interface NAryTreeNode {
+  val: number
+  children: NAryTreeNode[]
+}
+
 export interface TrieNode {
   isWord: boolean
   values: Map<string, TrieNode>
@@ -50,6 +55,34 @@ export function toDoublyLinkedList(nums: number[]): DoublyListNode | null {
   }
 
   return listResult
+}
+
+export function toNAryTree(nums: number[]): NAryTreeNode | null {
+  if (!nums || !nums.length) {
+    return null
+  }
+
+  const root: NAryTreeNode = {val: nums[0], children: []}
+  const queue = [root]
+  let index = 2
+  let prevIndex = 2
+
+  while (index <= nums.length) {
+    if (nums[index] === null || index === nums.length) {
+      const current = queue.shift()
+
+      for (let i = prevIndex; i < index; i++) {
+        const child: NAryTreeNode = {val: nums[i], children: []}
+        queue.push(child)
+        current.children.push(child)
+      }
+
+      prevIndex = index + 1
+    }
+    index++
+  }
+
+  return root
 }
 
 export function toTree(nums: number[]): TreeNode | null {

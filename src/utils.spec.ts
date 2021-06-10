@@ -1,4 +1,13 @@
-import {toTree, toLinkedList, TreeNode, toGraph, GraphNode, Heap} from 'utils'
+import {
+  toTree,
+  toLinkedList,
+  TreeNode,
+  toGraph,
+  GraphNode,
+  Heap,
+  NAryTreeNode,
+  toNAryTree,
+} from 'utils'
 
 test('toLinkedList non-empty list', () => {
   expect(toLinkedList([1, 2, 3])).toEqual({
@@ -100,7 +109,6 @@ test('the Heap works', () => {
   heap.add(6)
   expect(heap.peek()).toEqual(6)
 
-
   expect(heap.remove()).toEqual(6)
   expect(heap.peek()).toEqual(5)
   expect(heap.remove()).toEqual(5)
@@ -118,4 +126,77 @@ test('the Heap works', () => {
 
   heap.add(11)
   expect(heap.remove()).toEqual(11)
+})
+
+test('toNAry tree works 1', () => {
+  const nums = [1, null, 3, 2, 4, null, 5, 6]
+  const expected: NAryTreeNode = {
+    val: 1,
+    children: [
+      {
+        val: 3,
+        children: [
+          {val: 5, children: []},
+          {val: 6, children: []},
+        ],
+      },
+      {val: 2, children: []},
+      {val: 4, children: []},
+    ],
+  }
+
+  expect(toNAryTree(nums)).toEqual(expected)
+})
+
+test('toNAry tree works 2', () => {
+  const nums = [
+    1,
+    null,
+    2,
+    3,
+    4,
+    5,
+    null,
+    null,
+    6,
+    7,
+    null,
+    8,
+    null,
+    9,
+    10,
+    null,
+    null,
+    11,
+    null,
+    12,
+    null,
+    13,
+    null,
+    null,
+    14,
+  ]
+  const expected: NAryTreeNode = {
+    val: 1,
+    children: [
+      {val: 2, children: []},
+      {
+        val: 3,
+        children: [
+          {val: 6, children: []},
+          {val: 7, children: [{val: 11, children: [{val: 14, children: []}]}]},
+        ],
+      },
+      {val: 4, children: [{val: 8, children: [{val: 12, children: []}]}]},
+      {
+        val: 5,
+        children: [
+          {val: 9, children: [{val: 13, children: []}]},
+          {val: 10, children: []},
+        ],
+      },
+    ],
+  }
+
+  expect(toNAryTree(nums)).toEqual(expected)
 })
