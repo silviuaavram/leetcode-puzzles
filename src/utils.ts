@@ -144,17 +144,25 @@ interface HeapNode<T> {
   parent?: HeapNode<T>
 }
 
+interface HeapProps<T> {
+  maxSize?: number
+  isHigher?: (value1: T, value2: T) => boolean
+}
+
 export class Heap<T = number> {
-  constructor(isHigher?: (value1: T, value2: T) => boolean) {
+  constructor(props: HeapProps<T> = {}) {
+    const {isHigher, maxSize} = props
     this.isHigher = isHigher
       ? isHigher
       : (value1: T, value2: T) => value1 > value2 // MaxHeap with numbers by default
     this.nodes = []
+    this.maxSize = maxSize
   }
 
   private isHigher: (value1: T, value2: T) => boolean
   private nodes: HeapNode<T>[]
   private head: HeapNode<T>
+  private maxSize: number
 
   public print(): void {
     const result: T[][] = [[this.head.value]]
@@ -213,6 +221,10 @@ export class Heap<T = number> {
         current = current.parent
       }
     }
+
+    if (this.size !== undefined && this.nodes.length > this.size) {
+      this.removeLastNode()
+    }
   }
 
   public peek(): T {
@@ -221,25 +233,37 @@ export class Heap<T = number> {
 
   public remove(): T {
     const result = this.head.value
-    let current = this.nodes.pop()
 
-    if (!current.parent) {
+    if (!this.head.left && !this.head.right) {
       this.head = null
+      this.nodes.pop()
       return result
     }
 
-    if (current.parent.left === current) {
-      current.parent.left = null
-    } else if (current.parent.right === current) {
-      current.parent.right = null
-      this.nodes.unshift(current.parent)
-    }
+    const current = this.removeLastNode()
 
     this.head.value = current.value
 
     this.swapOnRemove()
 
     return result
+  }
+
+  public get size() {
+    return this.nodes.length
+  }
+
+  private removeLastNode(): HeapNode<T> {
+    const current = this.nodes.pop()
+
+    if (current.parent.left === current) {
+      current.parent.left = null
+    } else if (current.parent.right === current) {
+      current.parent.right = null
+      this.nodes.unshift(current.parent) // put the parent back in the nodes accepting children
+    }
+
+    return current
   }
 
   private swapOnRemove(current = this.head): void {
