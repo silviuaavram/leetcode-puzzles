@@ -3,81 +3,82 @@
  */
 
 export function reverseWords(s: string): string {
-  function getStringForwards(
-    startIndex: number,
-    endIndex: number,
-  ): [number, number, number] | null {
-    let current = startIndex
-    let wordStart
-    let whitespacesCount = 0
-    
-    while (s[current] === ' ' && current <= endIndex) {
-      current++
-      whitespacesCount++
+  for (let index = 0; index < s.length - 1; index++) {
+    if (s.slice(index, index + 2) === '  ') {
+      s = `${s.slice(0, index)} ${s.slice(index + 2)}`
+      index--
     }
-    
-    if (current > endIndex) {
-      return null
-    }
-    
-    wordStart = current
-    
-    while (s[current + 1] !== ' ' && current <= endIndex) {
-      current++
-    }
-
-    return [wordStart, current, whitespacesCount]
   }
 
-  function getStringBackwards(
-    startIndex: number,
-    endIndex: number,
-  ): [number, number, number] | null {
-    let current = startIndex
-    let wordStart
-    let whitespacesCount = 0
-
-    while (s[current] === ' ' && current >= endIndex) {
-      current--
-      whitespacesCount++
-    }
-
-    if (current < endIndex) {
-      return null
-    }
-
-    wordStart = current
-
-    while (s[current - 1] !== ' ' && current >= endIndex) {
-      current--
-    }
-
-    return [current, wordStart, whitespacesCount]
+  if (s[0] === ' ') {
+    s = s.slice(1)
+  }
+  if (s[s.length - 1] === ' ') {
+    s = s.slice(0, s.length - 1)
   }
 
-  let word1 = getStringForwards(0, s.length - 1)
-  let word2 = getStringBackwards(s.length - 1, 0)
+  function getWordIndecesForwards(start = 0): number[] {
+    let wordStart: number
 
-  console.log(word1, word2)
-  while (word1 && word2) {
-    const [s1, e1, w1] = word1
-    const [s2, e2, w2] = word2
-    const len1  = e1 - s1 + 1
-    const len2  = e2 - s2 + 1
+    for (let index = start; index < s.length; index++) {
+      const char = s[index]
 
-    if (s1 === s2) {
-      // whitespaces
-      break
+      if (char === ' ') {
+        if (wordStart !== undefined) {
+          return [wordStart, index - 1]
+        }
+      } else {
+        if (wordStart === undefined) {
+          wordStart = index
+        }
+      }
     }
 
-    s = `${s.substring(0, s1 - w1)}${s.substring(s2, e2 + 1)}${s.substring(
-      e1 + 1,
-      s2,
-    )}${s.substring(s1, e1 + 1)}${s.substring(e2 + w2)}`
+    if (wordStart !== undefined) {
+      return [wordStart, s.length - 1]
+    }
 
-    console.log(s)
-    word1 = getStringForwards(s1 + len2 + 1, s.length -1)
-    word2 = getStringBackwards(e2 - len1 - 1, 0)
+    return []
   }
+
+  function getWordIndecesBackwards(start = s.length - 1): number[] {
+    let wordEnd: number
+
+    for (let index = start; index >= 0; index--) {
+      const char = s[index]
+
+      if (char === ' ') {
+        if (wordEnd !== undefined) {
+          return [index + 1, wordEnd]
+        }
+      } else {
+        if (wordEnd === undefined) {
+          wordEnd = index
+        }
+      }
+    }
+
+    if (wordEnd !== undefined) {
+      return [0, wordEnd]
+    }
+
+    return []
+  }
+
+  let [start1, end1] = getWordIndecesForwards()
+  let [start2, end2] = getWordIndecesBackwards()
+
+  while (end1 < start2) {
+    const newForwardsStart = start1 + end2 - start2 + 2
+    const newBackwardsStart = start2 + (end2 - start2 - end1 + start1) - 2
+
+    s = `${s.slice(0, start1)}${s.slice(start2, end2 + 1)}${s.slice(
+      end1 + 1,
+      start2,
+    )}${s.slice(start1, end1 + 1)}${s.slice(end2 + 1)}`
+    ;[start1, end1] = getWordIndecesForwards(newForwardsStart)
+    ;[start2, end2] = getWordIndecesBackwards(newBackwardsStart)
+  }
+
   return s
 }
