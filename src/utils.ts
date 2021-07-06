@@ -145,24 +145,21 @@ interface HeapNode<T> {
 }
 
 interface HeapProps<T> {
-  maxSize?: number
   isHigher?: (value1: T, value2: T) => boolean
 }
 
 export class Heap<T = number> {
   constructor(props: HeapProps<T> = {}) {
-    const {isHigher, maxSize} = props
+    const {isHigher} = props
     this.isHigher = isHigher
       ? isHigher
       : (value1: T, value2: T) => value1 > value2 // MaxHeap with numbers by default
     this.nodes = []
-    this.maxSize = maxSize
   }
 
   private isHigher: (value1: T, value2: T) => boolean
   private nodes: HeapNode<T>[]
   private head: HeapNode<T>
-  private maxSize: number
 
   public print(): void {
     const result: T[][] = [[this.head.value]]
