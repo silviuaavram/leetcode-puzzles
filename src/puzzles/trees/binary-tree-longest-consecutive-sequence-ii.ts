@@ -60,8 +60,6 @@ export function longestConsecutive(root: TreeNode | null): number {
       max = Math.max(max, values.asc + values.desc - 1)
     }
 
-    // console.log(node, values.asc, values.desc)
-
     paths.set(node, values)
   }
 
