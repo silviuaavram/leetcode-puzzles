@@ -1,21 +1,24 @@
-import {convertTreeToList} from './convert-binary-search-tree-to-sorted-doubly-linked-list'
-import {toDoublyLinkedList, toTree} from 'utils'
+import {toTree, TreeNode} from 'utils'
+import {treeToDoublyList} from './convert-binary-search-tree-to-sorted-doubly-linked-list'
 
-test('converts the tree to a doubly linked list', () => {
-  const tree = toTree([100, 50, 200, 25, 75, 125, 350, null, 30, 60, null])
-  const list = toDoublyLinkedList([25, 30, 50, 60, 75, 100, 125, 200, 350])
+test('converts from tree to doubly linked list 1', () => {
+  const root = toTree([4, 2, 5, 1, 3])
+  const node1: TreeNode = {val: 1, left: null, right: null}
+  const node2: TreeNode = {val: 2, left: null, right: null}
+  const node3: TreeNode = {val: 3, left: null, right: null}
+  const node4: TreeNode = {val: 4, left: null, right: null}
+  const node5: TreeNode = {val: 5, left: null, right: null}
 
-  expect(convertTreeToList(tree)).toEqual(list)
-})
+  node1.left = node5
+  node1.right = node2
+  node2.left = node1
+  node2.right = node3
+  node3.left = node2
+  node3.right = node4
+  node4.left = node3
+  node4.right = node5
+  node5.left = node4
+  node5.right = node1
 
-test('should not convert empty tree', () => {
-  const tree = toTree([])
-
-  expect(convertTreeToList(tree)).toEqual(toDoublyLinkedList([]))
-})
-
-test('should convert one node binary tree', () => {
-  const tree = toTree([0])
-
-  expect(convertTreeToList(tree)).toEqual(toDoublyLinkedList([0]))
+  expect(treeToDoublyList(root)).toEqual(node1)
 })

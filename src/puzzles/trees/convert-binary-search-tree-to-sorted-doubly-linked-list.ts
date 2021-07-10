@@ -1,53 +1,41 @@
 /**
  * https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/
  */
+/**
+ * Definition for a binary tree node.
+ * class Node {
+ *     val: number
+ *     left: Node | null
+ *     right: Node | null
+ *     constructor(val?: number, left?: Node | null, right?: Node | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
 
-import {DoublyListNode, TreeNode} from 'utils'
+import {TreeNode as Node} from 'utils'
 
-export function convertTreeToList(head: TreeNode): DoublyListNode {
-  if (!head) {
-    return null
+export function treeToDoublyList(root: Node | null): Node | null {
+  const nodes: Node[] = []
+
+  function visitNode(node: Node): void {
+    if (!node) {
+      return
+    }
+
+    visitNode(node.left)
+    nodes.push(node)
+    visitNode(node.right)
   }
 
+  visitNode(root)
 
-  let listHead: DoublyListNode
-  const treeNodeQueue = [head]
-  const visitedTreeNodes: TreeNode[] = []
-  let currentListNode: DoublyListNode
-
-  while (treeNodeQueue.length) {
-    const currentTreeNode = treeNodeQueue[treeNodeQueue.length -1]
-
-    if (
-      currentTreeNode.left &&
-      visitedTreeNodes.indexOf(currentTreeNode.left) < 0
-    ) {
-      treeNodeQueue.push(currentTreeNode.left)
-      continue
-    }
-
-    if (!currentListNode) {
-      currentListNode = {val: currentTreeNode.val, next: null, prev: null}
-      listHead = currentListNode
-    } else {
-      currentListNode.next = {
-        val: currentTreeNode.val,
-        next: null,
-        prev: currentListNode,
-      }
-      currentListNode = currentListNode.next
-    }
-
-    treeNodeQueue.pop()
-    visitedTreeNodes.push(currentTreeNode)
-
-    if (
-      currentTreeNode.right &&
-      visitedTreeNodes.indexOf(currentTreeNode.right) < 0
-    ) {
-      treeNodeQueue.push(currentTreeNode.right)
-    }
+  for (let index = 0; index < nodes.length; index++) {
+    nodes[index].left = nodes[index - 1 < 0 ? nodes.length - 1 : index - 1]
+    nodes[index].right = nodes[index + 1 === nodes.length ? 0 : index + 1]
   }
 
-  return listHead
+  return nodes[0]
 }
