@@ -3,13 +3,12 @@
  */
 export function maxValue(n: number, index: number, maxSum: number): number {
   function sum(start: number, end: number) {
-    let sum = 0
+    const bigStart1 = BigInt(start - 1)
+    const bigStart2 = BigInt(start)
+    const bigEnd1 = BigInt(end)
+    const bigEnd2 = BigInt(end + 1)
 
-    for (let partialSum = start; partialSum <= end; partialSum++) {
-      sum += partialSum
-    }
-
-    return sum
+    return Number(bigEnd1 * bigEnd2 / BigInt(2) - bigStart1 * bigStart2 / BigInt(2))
   }
 
   function getTotalSum(value: number): number {
