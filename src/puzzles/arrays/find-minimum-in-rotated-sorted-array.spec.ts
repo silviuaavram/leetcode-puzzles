@@ -24,3 +24,14 @@ test('finds the minimum 4', () => {
   expect(findMin(nums)).toEqual(1)
 })
 
+test('finds the minimum 5', () => {
+  const nums = [10, 1, 2]
+
+  expect(findMin(nums)).toEqual(1)
+})
+
+test('finds the minimum 6', () => {
+  const nums = [10, 11, 2, 3]
+
+  expect(findMin(nums)).toEqual(2)
+})
