@@ -9,7 +9,6 @@ export function connectSticks(unsortedSticks: number[]): number {
   let cost = 0
 
   while (sticks.length > 1) {
-    console.log(sticks)
     const mergeCost = sticks.shift() + sticks.shift()
     cost += mergeCost
 
